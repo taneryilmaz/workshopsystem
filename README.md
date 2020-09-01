@@ -26,12 +26,9 @@ See the `rest/` directory to get Postman Collections.
 ## Config
 
 Provide the appropriate profile to applications to run on dev/test/uat/prod mode:
-<code>
+```
 *    -Dspring.profiles.active=dev_eurekaservice
 *    -Dspring.profiles.active=dev_entityservice
 *    -Dspring.profiles.active=dev_reservationservice
-</code>
+```
 
-
-## UI
-TBD
