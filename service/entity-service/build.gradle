@@ -1,0 +1,25 @@
+apply plugin: 'application'
+mainClassName = 'apricot.workshopsystem.entityservice.MainApplication.java'
+
+dependencies {
+    compile project(':common')
+
+    compile springBootStarterWeb
+    compile springBootStarterDataJpa
+    compile springBootStarterJetty
+    compile springBootStarterActuator
+    compile springfoxSwagger2
+    compile springfoxSwaggerUI
+    compile jakartaXmlBindApi
+    compile jakartaValidationApi
+    compile mapStruct
+    compile mapStructProcessor
+    compile eurekaServer
+    compile h2
+    compileOnly lombok
+    implementation zalandoProblemSpringWeb
+    annotationProcessor mapStructProcessor
+    annotationProcessor lombok
+
+    testCompile junit
+}

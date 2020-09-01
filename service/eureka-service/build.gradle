@@ -1,0 +1,16 @@
+apply plugin: 'application'
+mainClassName = 'apricot.workshopsystem.eurekaservice.MainApplication.java'
+
+dependencies {
+    compile springBootStarterWeb
+    compile springBootStarterJetty
+    compile springBootStarterActuator
+    compile jakartaXmlBindApi
+    compile jakartaValidationApi
+    compile eurekaServer
+    compile h2
+    compileOnly lombok
+    annotationProcessor lombok
+
+    testCompile junit
+}

@@ -1,0 +1,132 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.5.RELEASE'
+        springCloudVersion = 'Hoxton.SR3'
+        springfoxSwagger2Version = '2.9.2'
+        springfoxSwaggerUIVersion = '2.9.2'
+        jakartaXmlBindApiVersion = '2.3.3'
+        jakartaValidationApiVersion = '2.0.2'
+        mapStructVersion = '1.3.1.Final'
+        mapStructProcessorVersion = '1.3.1.Final'
+        zalandoProblemSpringWebVersion = '0.25.2'
+        eurekaServerVersion = '2.2.2.RELEASE'
+        h2Version = '1.4.200'
+        lombokVersion = '1.18.12'
+        junitVersion = '4.12'
+        sonarqubeGradlePluginVersion = '2.8.0.1969'
+
+        springBootStarter = [group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion]
+        springBootStarterWeb = [group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion]
+        springBootStarterJetty = [group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: springBootVersion]
+        springBootStarterDataJpa = [group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springBootVersion]
+        springBootStarterActuator = [group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion]
+        springfoxSwagger2 = [group: 'io.springfox', name: 'springfox-swagger2', version: springfoxSwagger2Version]
+        springfoxSwaggerUI = [group: 'io.springfox', name: 'springfox-swagger-ui', version: springfoxSwaggerUIVersion]
+        jakartaXmlBindApi = [group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: jakartaXmlBindApiVersion]
+        jakartaValidationApi = [group: 'jakarta.validation', name: 'jakarta.validation-api', version: jakartaValidationApiVersion]
+        mapStruct = [group: 'org.mapstruct', name: 'mapstruct', version: mapStructVersion]
+        mapStructProcessor = [group: 'org.mapstruct', name: 'mapstruct-processor', version: mapStructProcessorVersion]
+        zalandoProblemSpringWeb = [group: 'org.zalando', name: 'problem-spring-web', version: zalandoProblemSpringWebVersion]
+        eurekaServer = [group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server', version: eurekaServerVersion]
+        h2 = [group: 'com.h2database', name: 'h2', version: h2Version]
+        lombok = [group: 'org.projectlombok', name: 'lombok', version: '1.18.12']
+        junit = [group: 'junit', name: 'junit', version: junitVersion]
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubeGradlePluginVersion}"
+    }
+}
+
+plugins {
+    id 'jacoco'
+    id 'checkstyle'
+    id "com.github.ben-manes.versions" version '0.28.0'
+    id 'org.owasp.dependencycheck' version '5.3.0'
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
+}
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'org.sonarqube'
+
+ext.configDir = new File(rootDir, 'config')
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+wrapper {
+    gradleVersion = '5.2.1'
+}
+
+allprojects {
+    group = 'apricot.workshopsystem'
+}
+
+sonarqube {
+    properties {
+        property "sonar.host.url", ""
+        property "sonar.projectKey", ""
+        property "sonar.projectName", ""
+        property "sonar.projectVersion", "${version}"
+        property "sonar.login", project.sonarUser
+        property "sonar.password", project.sonarPassword
+    }
+}
+
+dependencyUpdates.resolutionStrategy {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: "org.sonarqube"
+    apply plugin: 'checkstyle'
+
+    checkstyle {
+        toolVersion '8.9'
+        configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+    }
+    checkstyleMain {
+        source = 'src/main/java'
+    }
+    checkstyleTest {
+        source = 'src/test/java'
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+
+    jacoco {
+        toolVersion = "0.8.5"
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+}

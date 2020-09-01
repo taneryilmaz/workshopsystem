@@ -1,0 +1,6 @@
+rootProject.name = 'workshopsystem'
+
+include 'common'
+include 'service:entity-service'
+include 'service:reservation-system'
+include 'service:eureka-service'

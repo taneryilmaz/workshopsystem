@@ -1,0 +1,9 @@
+dependencies {
+    compile springBootStarter
+    compile springBootStarterDataJpa
+    compile springBootStarterWeb
+    compile jakartaValidationApi
+    implementation zalandoProblemSpringWeb
+    compileOnly lombok
+    annotationProcessor lombok
+}

@@ -1,0 +1,10 @@
+.idea/
+*.iml
+*.iws
+*.ipr
+log/
+target/
+build/
+.gradle/
+/data/db/h2.trace.db
+/data/db/h2.mv.db

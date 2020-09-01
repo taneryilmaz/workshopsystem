@@ -1,0 +1,20 @@
+apply plugin: 'application'
+mainClassName = 'apricot.workshopsystem.reservationservice.MainApplication.java'
+
+dependencies {
+    compile project(':common')
+
+    compile springBootStarterWeb
+    compile springBootStarterJetty
+    compile springBootStarterActuator
+    compile springfoxSwagger2
+    compile springfoxSwaggerUI
+    compile jakartaXmlBindApi
+    compile jakartaValidationApi
+    compile eurekaServer
+    compileOnly lombok
+    implementation zalandoProblemSpringWeb
+    annotationProcessor lombok
+
+    testCompile junit
+}
