@@ -1,9 +1,9 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.5.RELEASE'
-        springCloudVersion = 'Hoxton.SR3'
-        springfoxSwagger2Version = '2.9.2'
-        springfoxSwaggerUIVersion = '2.9.2'
+        springBootVersion = '2.3.4.RELEASE'
+        springCloudVersion = 'Hoxton.SR8'
+        springfoxSwagger2Version = '3.0.0'
+        springfoxSwaggerUIVersion = '3.0.0'
         jakartaXmlBindApiVersion = '2.3.3'
         jakartaValidationApiVersion = '2.0.2'
         mapStructVersion = '1.3.1.Final'
