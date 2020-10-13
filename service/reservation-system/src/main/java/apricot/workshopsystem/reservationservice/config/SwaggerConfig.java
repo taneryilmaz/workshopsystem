@@ -10,13 +10,11 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.time.LocalDate;
 
 @Profile("dev_reservationservice")
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
@@ -27,10 +25,11 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo())
-                .select().paths(PathSelectors.any())
-                .apis(RequestHandlerSelectors.any())
+                .select()
+                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("apricot.workshopsystem.reservationservice"))
                 .build()
                 .pathMapping("/")
                 .useDefaultResponseMessages(false)

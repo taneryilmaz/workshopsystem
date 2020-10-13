@@ -7,7 +7,7 @@ dependencies {
     compile springBootStarterWeb
     compile springBootStarterJetty
     compile springBootStarterActuator
-    compile springfoxSwagger2
+    compile springfoxBootStarter
     compile springfoxSwaggerUI
     compile jakartaXmlBindApi
     compile jakartaValidationApi

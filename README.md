@@ -12,9 +12,6 @@ Start the application. This application comes with a built in Swagger UI client.
 
 This endpoint is normally not available in production system thus the application is configured to expose it only when the current active profile is development mode (`dev_xxxservice`). 
 
-The UI should look similar to [Swagger-UI](src/main/resources/images/Swagger-UI.png)
-
-
 
 ## Rest APIs
 

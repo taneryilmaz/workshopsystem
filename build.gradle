@@ -2,7 +2,7 @@ buildscript {
     ext {
         springBootVersion = '2.3.4.RELEASE'
         springCloudVersion = 'Hoxton.SR8'
-        springfoxSwagger2Version = '3.0.0'
+        springfoxBootStarterVersion = '3.0.0'
         springfoxSwaggerUIVersion = '3.0.0'
         jakartaXmlBindApiVersion = '2.3.3'
         jakartaValidationApiVersion = '2.0.2'
@@ -20,7 +20,7 @@ buildscript {
         springBootStarterJetty = [group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: springBootVersion]
         springBootStarterDataJpa = [group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springBootVersion]
         springBootStarterActuator = [group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion]
-        springfoxSwagger2 = [group: 'io.springfox', name: 'springfox-swagger2', version: springfoxSwagger2Version]
+        springfoxBootStarter = [group: 'io.springfox', name: 'springfox-boot-starter', version: springfoxBootStarterVersion]
         springfoxSwaggerUI = [group: 'io.springfox', name: 'springfox-swagger-ui', version: springfoxSwaggerUIVersion]
         jakartaXmlBindApi = [group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: jakartaXmlBindApiVersion]
         jakartaValidationApi = [group: 'jakarta.validation', name: 'jakarta.validation-api', version: jakartaValidationApiVersion]
