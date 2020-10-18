@@ -20,6 +20,7 @@ buildscript {
         springBootStarterJetty = [group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: springBootVersion]
         springBootStarterDataJpa = [group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springBootVersion]
         springBootStarterActuator = [group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion]
+        springBootStarterValidation = [group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: springBootVersion]
         springfoxBootStarter = [group: 'io.springfox', name: 'springfox-boot-starter', version: springfoxBootStarterVersion]
         springfoxSwaggerUI = [group: 'io.springfox', name: 'springfox-swagger-ui', version: springfoxSwaggerUIVersion]
         jakartaXmlBindApi = [group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: jakartaXmlBindApiVersion]

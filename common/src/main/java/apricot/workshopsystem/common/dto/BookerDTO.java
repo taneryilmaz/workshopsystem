@@ -2,18 +2,20 @@ package apricot.workshopsystem.common.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 public class BookerDTO {
     private Long id;
 
-    @NotBlank(message = "Name is mandatory")
+    @NotEmpty(message = "Name is mandatory")
     private String name;
 
-    @NotBlank(message = "Surname is mandatory")
+    @NotEmpty(message = "Surname is mandatory")
     private String surname;
 
-    @NotBlank(message = "Email is mandatory")
+    @NotEmpty(message = "Email is mandatory")
+    @Email(message = "${validatedValue} is not a valid email")
     private String email;
 }

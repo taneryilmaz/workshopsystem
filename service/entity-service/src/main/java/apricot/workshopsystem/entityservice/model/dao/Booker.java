@@ -3,7 +3,9 @@ package apricot.workshopsystem.entityservice.model.dao;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @Entity
@@ -19,6 +21,7 @@ public class Booker {
     @NotBlank(message = "Surname is mandatory")
     private String surname;
 
-    @NotBlank(message = "Email is mandatory")
+    @NotEmpty(message = "Email is mandatory")
+    @Email(message = "${validatedValue} is not a valid email")
     private String email;
 }

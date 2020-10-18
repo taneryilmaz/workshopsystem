@@ -22,10 +22,11 @@ See the `rest/` directory to get Postman Collections.
 
 ## Config
 
-Provide the appropriate profile to applications to run on dev/test/uat/prod mode:
+Provide the appropriate profile to applications to run on dev/test/uat/prod mode.
+You can add the profile of the service to the VM options like below:
 ```
-*    -Dspring.profiles.active=dev_eurekaservice
-*    -Dspring.profiles.active=dev_entityservice
-*    -Dspring.profiles.active=dev_reservationservice
+ -Dspring.profiles.active=dev_eurekaservice
+ -Dspring.profiles.active=dev_entityservice
+ -Dspring.profiles.active=dev_reservationservice
 ```
 

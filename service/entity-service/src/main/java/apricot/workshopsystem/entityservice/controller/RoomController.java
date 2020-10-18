@@ -1,7 +1,6 @@
 package apricot.workshopsystem.entityservice.controller;
 
 import apricot.workshopsystem.common.dto.RoomDTO;
-import apricot.workshopsystem.common.exception.BadRequestException;
 import apricot.workshopsystem.common.webutil.HeaderUtil;
 import apricot.workshopsystem.common.webutil.PaginationUtil;
 import apricot.workshopsystem.common.webutil.ResponseUtil;
@@ -15,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -38,23 +39,6 @@ public class RoomController {
     private RoomService roomService;
 
     /**
-     * {@code GET /api/rooms/:id} : Get the "id" room.
-     *
-     * @param id The id of the roomDTO to retrieve.
-     *
-     * @return The {@link ResponseEntity} with status {@code 200 (OK)} and with body the roomDTO, or with status {@code 404 (Not Found)}.
-     */
-    @GetMapping("/rooms/{id}")
-    @ApiOperation(value = "Search a room with an ID", response = Room.class)
-    public ResponseEntity<RoomDTO> get(@PathVariable(value = "id") Long id) {
-        LOG.info("REST request to get Room : {}", id);
-
-        Optional<RoomDTO> roomDTO = roomService.find(id);
-
-        return ResponseUtil.wrapOrNotFound(roomDTO);
-    }
-
-    /**
      * {@code GET /api/rooms} : Get all the rooms.
      *
      * @param pageable The pagination information.
@@ -73,6 +57,23 @@ public class RoomController {
     }
 
     /**
+     * {@code GET /api/rooms/:id} : Get the "id" room.
+     *
+     * @param id The id of the roomDTO to retrieve.
+     *
+     * @return The {@link ResponseEntity} with status {@code 200 (OK)} and with body the roomDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/rooms/{id}")
+    @ApiOperation(value = "Search a room with an ID", response = Room.class)
+    public ResponseEntity<RoomDTO> get(@PathVariable(value = "id") Long id) {
+        LOG.info("REST request to get Room: {}", id);
+
+        Optional<RoomDTO> roomDTO = roomService.find(id);
+
+        return ResponseUtil.wrapOrNotFound(roomDTO);
+    }
+
+    /**
      * {@code POST /rooms} : Create a new room.
      *
      * @param roomDTO The roomDTO to create.
@@ -80,19 +81,19 @@ public class RoomController {
      * @return The {@link ResponseEntity} with status {@code 201 (Created)} and with body the new roomDTO,
      *      or with status {@code 400 (Bad Request)} if the room has already an ID.
      *
-     * @throws BadRequestException if the requested data is invalid.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * @throws ResponseStatusException if the requested data is invalid.
      */
     @PostMapping("/rooms")
     @ApiOperation(value = "Add the room")
-    public ResponseEntity<RoomDTO> add(@Valid @RequestBody RoomDTO roomDTO) throws BadRequestException, URISyntaxException {
-        LOG.info("REST request to save Room : {}", roomDTO);
+    public ResponseEntity<RoomDTO> add(@Valid @RequestBody RoomDTO roomDTO) throws ResponseStatusException, URISyntaxException {
+        LOG.info("REST request to save Room: {}", roomDTO);
 
         if (roomDTO.getId() != null) {
-            throw new BadRequestException("Id must be null to create a new Room", ENTITY_NAME, "Id is not null");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id must be null to create a new Room: " + roomDTO);
         }
 
         RoomDTO result = roomService.save(roomDTO);
+
         return ResponseEntity.created(new URI("/api/rooms/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(APPLICATION_NAME, true, ENTITY_NAME, result.getId().toString()))
                 .body(result);
@@ -107,19 +108,19 @@ public class RoomController {
      *      or with status {@code 400 (Bad Request)} if the roomDTO is not valid,
      *      or with status {@code 500 (Internal Server Error)} if the roomDTO couldn't be updated.
      *
-     * @throws BadRequestException if the requested data is invalid.
+     * @throws ResponseStatusException if the requested data is invalid.
      */
     @PutMapping("/rooms")
     @ApiOperation(value = "Update the room")
-    public ResponseEntity<?> update(@Valid @RequestBody RoomDTO roomDTO) throws BadRequestException {
+    public ResponseEntity<?> update(@Valid @RequestBody RoomDTO roomDTO) throws ResponseStatusException {
         LOG.info("REST request to update Room : {}", roomDTO);
 
         if (roomDTO.getId() == null) {
-            throw new BadRequestException("Id must exists (got null value) to update the room", ENTITY_NAME, "Id is null");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id is null: " + roomDTO);
         }
 
         roomService.find(roomDTO.getId())
-                .orElseThrow(() -> new BadRequestException("No Room found with id " + roomDTO.getId(), ENTITY_NAME, "Id not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room not found with id: " + roomDTO.getId()));
 
         RoomDTO result = roomService.save(roomDTO);
 
@@ -132,12 +133,17 @@ public class RoomController {
      * {@code DELETE /rooms/:id} : Delete the "id" room.
      *
      * @param id The id of the roomDTO to delete.
-     * @return The {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     *
+     * @return The {@link ResponseEntity} with status {@code 204 (NO_CONTENT)} if deleted,
+     *      or with status {@code 400 (BAD_REQUEST)} if error occurs.
      */
     @DeleteMapping("/rooms/{id}")
     @ApiOperation(value = "Delete the room")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         LOG.info("REST request to delete Room : {}", id);
+
+        roomService.find(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room not found with id: " + id));
 
         roomService.delete(id);
 

@@ -5,6 +5,6 @@ import apricot.workshopsystem.common.util.EntityMapper;
 import apricot.workshopsystem.entityservice.model.dao.Booker;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring")
 public interface BookerMapper extends EntityMapper<BookerDTO, Booker> {
 }
